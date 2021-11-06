@@ -1,5 +1,5 @@
 ﻿const form = document.forms[0];
-
+/*
 form.addEventListener('submit', async event => {
     event.preventDefault();
 
@@ -12,3 +12,4 @@ form.addEventListener('submit', async event => {
 
     alert(`Recieved response: ${response.status} ${response.statusText}`);
 })
+*/

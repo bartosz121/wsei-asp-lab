@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Wsei_Lab5.Entities.ProductEntity>
+
+<div>
+    <h3>Visible products:</h3>
+    <ul>
+        @foreach (var product in Model)
+        {
+        <li>
+            <a asp-controller="Products" asp-action="Product" asp-route-id="@product.Id">
+                @product.Name
+            </a>
+        </li>
+        }
+    </ul>
+</div>

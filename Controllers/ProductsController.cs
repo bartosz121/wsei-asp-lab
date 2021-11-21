@@ -66,5 +66,23 @@ namespace Wsei_Lab5.Controllers
             var products = await productsQuery.ToListAsync();
             return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Product(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
     }
 }

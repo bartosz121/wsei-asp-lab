@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using Wsei_Lab5.Database;
 using Wsei_Lab5.Entities;
 using Wsei_Lab5.Models;
+using Wsei_Lab5.Services;
 
 namespace Wsei_Lab5.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IProductService _productService;
 
-        public ProductsController(AppDbContext dbContext)
+        public ProductsController(IProductService productService)
         {
-            _dbContext = dbContext;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -41,29 +42,14 @@ namespace Wsei_Lab5.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ProductModel product)
         {
-            var entity = new ProductEntity
-            {
-                Name = product.Name,
-                Description = product.Description,
-                IsVisible = product.IsVisible,
-            };
-
-            await _dbContext.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-
+            await _productService.Add(product);
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> List(string name)
         {
-            IQueryable<ProductEntity> productsQuery = _dbContext.Products;
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                productsQuery = productsQuery.Where(x => x.Name.Contains(name));
-            }
-            var products = await productsQuery.ToListAsync();
+            var products = await _productService.GetItemsByName(name);
             return View(products);
         }
 
@@ -75,7 +61,7 @@ namespace Wsei_Lab5.Controllers
                 return NotFound();
             }
 
-            var student = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var student = await _productService.GetItem((int)id);
 
             if (student == null)
             {

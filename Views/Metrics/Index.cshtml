@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Wsei_Lab5.Models.EndpointStats>
+
+<h2>Metrics</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>HTTP Method</th>
+            <th>Path</th>
+            <th>Request Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var endpoint in Model)
+            {
+        <tr>
+            <td>@endpoint.HttpMethod</td>
+            <td>@endpoint.RequestUrl</td>
+            <td>@endpoint.RequestCount</td>
+        </tr>
+            }
+    </tbody>
+</table>

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wsei_Lab5.Database;
+using Wsei_Lab5.Middleware;
+using Wsei_Lab5.Services;
 
 namespace Wsei_Lab5
 {
@@ -29,6 +31,9 @@ namespace Wsei_Lab5
             services.AddDbContext<AppDbContext>(
                 config => config.UseSqlServer(Configuration.GetConnectionString("Application"))
             );
+
+            services.AddScoped<IProductService, ProductService>();
+            services.AddSingleton<IMetricsCollector, MetricsCollector>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +47,9 @@ namespace Wsei_Lab5
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseMiddleware<CollectMetricsMiddleware>();
+
             app.UseStaticFiles();
 
             app.UseRouting();
